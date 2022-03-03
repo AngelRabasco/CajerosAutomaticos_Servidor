@@ -64,7 +64,7 @@ public class AdminDAO implements IAdminDAO {
 	public List<Admin> getAll() {
 		EntityManager em = PersistenceUnit.getEM();
 		em.getTransaction().begin();
-		TypedQuery<Admin> query = em.createNamedQuery("findAll", Admin.class);
+		TypedQuery<Admin> query = em.createNamedQuery("findAllAdmin", Admin.class);
 		List<Admin> result = query.getResultList();
 		em.getTransaction().commit();
 		return result;
