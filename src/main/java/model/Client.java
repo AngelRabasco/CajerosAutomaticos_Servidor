@@ -9,11 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Client")
+@NamedQueries({
+	@NamedQuery(name = "findClientByUsername", query = "SELECT a FROM Client c WHERE c.username=:username"),
+	@NamedQuery(name = "findClientByUsernamePassword", query = "SELECT a FROM Client c WHERE c.username=:username AND c.password=:password"),
+	@NamedQuery(name = "findAllClient", query = "SELECT a FROM Client c")
+})
 public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
