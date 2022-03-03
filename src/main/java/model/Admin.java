@@ -7,10 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Admin")
+@NamedQueries({
+	@NamedQuery(name = "findAdminByUsername", query = "SELECT a FROM Admin a WHERE a.username=:username"),
+	@NamedQuery(name = "findAdminByUsernamePassword", query = "SELECT a FROM Admin a WHERE a.username=:username AND a.password=:password"),
+	@NamedQuery(name = "findAll", query = "SELECT a FROM Admin a")
+})
 public class Admin implements Serializable {
 	private static final long serialVersionUID = 1L;
 
