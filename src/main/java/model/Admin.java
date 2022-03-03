@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "findAdminByUsername", query = "SELECT a FROM Admin a WHERE a.username=:username"),
 	@NamedQuery(name = "findAdminByUsernamePassword", query = "SELECT a FROM Admin a WHERE a.username=:username AND a.password=:password"),
-	@NamedQuery(name = "findAll", query = "SELECT a FROM Admin a")
+	@NamedQuery(name = "findAllAdmin", query = "SELECT a FROM Admin a")
 })
 public class Admin implements Serializable {
 	private static final long serialVersionUID = 1L;
