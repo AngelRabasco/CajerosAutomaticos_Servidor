@@ -28,15 +28,15 @@ public class Account implements Serializable {
 	@JoinColumn(name = "clientId")
 	private Client client;
 
-	public Account(Long id, String number, Double balance, Client client) {
-		this.id = id;
+	public Account(String number, Double balance, Client client) {
+		this.id = -1L;
 		this.number = number;
 		this.balance = balance;
 		this.client = client;
 	}
 
 	public Account() {
-		this(Long.MIN_VALUE, "", Double.MIN_VALUE, new Client());
+		this("", Double.MIN_VALUE, new Client());
 	}
 
 	public Long getId() {

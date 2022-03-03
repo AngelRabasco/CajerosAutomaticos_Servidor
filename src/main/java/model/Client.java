@@ -32,8 +32,8 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "client")
 	private List<Account> accounts;
 
-	public Client(Long id, String name, String surname, String username, String password, List<Account> accounts) {
-		this.id = id;
+	public Client(String name, String surname, String username, String password, List<Account> accounts) {
+		this.id = -1L;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
@@ -42,7 +42,7 @@ public class Client implements Serializable {
 	}
 
 	public Client() {
-		this(Long.MIN_VALUE, "", "", "", "", new ArrayList<Account>());
+		this("", "", "", "", new ArrayList<Account>());
 	}
 
 	public Long getId() {

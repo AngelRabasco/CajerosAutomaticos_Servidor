@@ -27,8 +27,8 @@ public class Admin implements Serializable {
 	@Column(name = "password")
 	private String password;
 
-	public Admin(Long id, String name, String surname, String username, String password) {
-		this.id = id;
+	public Admin(String name, String surname, String username, String password) {
+		this.id = -1L;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
@@ -36,7 +36,7 @@ public class Admin implements Serializable {
 	}
 
 	public Admin() {
-		this(Long.MIN_VALUE, "", "", "", "");
+		this("", "", "", "");
 	}
 
 	public Long getId() {
