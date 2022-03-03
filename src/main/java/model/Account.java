@@ -9,10 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Account")
+@NamedQueries({
+	@NamedQuery(name = "findAccountByNumber", query = "SELECT a FROM Account a WHERE a.number=:number"),
+	@NamedQuery(name = "findAccountByClient", query = "SELECT a FROM Account a WHERE a.client=:clientId"),
+	@NamedQuery(name = "findAllAccount", query = "SELECT a FROM Account a")
+})
 public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
