@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Admin;
 import model.Client;
 import model.dao.ClientDAO;
 
@@ -30,12 +31,9 @@ public class ClientController {
 		return new ClientDAO().getByUsernamePassword(client.getUsername(), client.getPassword());
 	}
 
-	public synchronized List<Client> mostarClientsPorAdmin(Long id) {
-		try {
-			return new ClientDAO().get
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ArrayList<Client>();
-		}
+	public synchronized List<Client> ShowAccountByAdmin(Admin admin) {
+
+		return new ClientDAO().getByAdmin(admin);
+
 	}
 }

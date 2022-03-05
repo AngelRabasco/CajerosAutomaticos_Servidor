@@ -13,12 +13,12 @@ public class AccountController {
 		aDAO.save(account);
 	
 	}
-	public void BorrarAccount(Account account) {
+	public void DeleteAccount(Account account) {
 		AccountDAO aDAO= new AccountDAO();
 		aDAO.delete(account);
 	
 	}
-	public Account mostrarAccount(Long id) {
+	public Account ShowAccount(Long id) {
 
 			return new AccountDAO().getById(id);
 	
