@@ -5,16 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-
-import model.dao.AccountDAO;
-import model.dao.AdminDAO;
-import model.dao.ClientDAO;
 
 public class GesConect {
 
-	private int port = 1234;
-
+	private Integer port = null;
 	private Socket socket = null;
 
 	private ObjectInputStream inputStream = null;
@@ -22,7 +16,7 @@ public class GesConect {
 
 	private Object obj;
 
-	public GesConect(int port){
+	public GesConect(Integer port){
         this.port = port;
     }
 
@@ -32,6 +26,7 @@ public class GesConect {
 			socket = serverSocket.accept();
 
 			inputStream = new ObjectInputStream(socket.getInputStream());
+			System.out.println(inputStream.readObject());
 
 			obj = inputStream.readObject();
 

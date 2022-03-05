@@ -16,7 +16,8 @@ import model.Package;
 
 public class ServerController implements Runnable {
 	ServerSocket servidor;
-	GesConect sm = new GesConect(1234);
+	GesConect con = new GesConect(9999);
+	
 	public void serverController(Object action) {
 
 		Package<?> paquete = (Package<?>) action;
@@ -65,8 +66,17 @@ public class ServerController implements Runnable {
 			break;
 		//Opción 9 Inicia la sesión como administrador
 		case 9:
-			Package<Admin> adminpackage2 = (Package<Admin>) paquete;
-			new AdminController().logAdministrador(adminpackage2.getObject());
+			@SuppressWarnings("unchecked")
+			Package<Admin> adminLogInPackage = (Package<Admin>) paquete;
+			try {
+				if (new AdminController().logAdministrador(adminLogInPackage.getObject()) != null) {
+					System.out.println("aaaa");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+//			new AdminController().logAdministrador(adminLogInPackage.getObject());
 			break;
 		//Opción 10 crea una nueva cuenta
 		case 10:
@@ -240,7 +250,7 @@ public class ServerController implements Runnable {
 			System.out.println("INICIANDO SERVIDOR");
 			while (true) {
 				System.out.println("Un nuevo cliente esta conectado al servidor, la informacion es: \n ");
-				Object action = sm.getObjectFromClient();
+				Object action = con.getObjectFromClient();
 				serverController(action);
 			}
 		} catch (Exception e) {

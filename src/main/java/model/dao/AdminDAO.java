@@ -58,6 +58,7 @@ public class AdminDAO implements IAdminDAO {
 		query.setParameter("password", password);
 		Admin result = query.getSingleResult();
 		em.getTransaction().commit();
+		System.out.println(result);
 		return result;
 	}
 
