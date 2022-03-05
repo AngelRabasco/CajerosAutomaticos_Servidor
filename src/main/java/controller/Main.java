@@ -4,17 +4,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.iesfranciscodelosrios.CajerosAutomaticosServidor.ServidorMain;
+
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		EntityManager em;
+		ServerController server = new ServerController();
+		Thread threadServer = new Thread(server);
+		threadServer.start();
+	
+		
+		/*EntityManager em;
 		EntityManagerFactory emf;
 		emf = Persistence.createEntityManagerFactory("aplicacionMariaDB");
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
-		em.getTransaction().commit();
+		em.getTransaction().commit();*/
 	}
 
 }
