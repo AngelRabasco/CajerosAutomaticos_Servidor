@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -33,17 +36,20 @@ public class Admin implements Serializable {
 	private String username;
 	@Column(name = "password")
 	private String password;
+	@OneToMany(mappedBy = "admin")
+	private List<Client> clients;
 
-	public Admin(String name, String surname, String username, String password) {
+	public Admin(String name, String surname, String username, String password, List<Client> clients) {
 		this.id = -1L;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.password = password;
+		this.clients = clients;
 	}
 
 	public Admin() {
-		this("", "", "", "");
+		this("", "", "", "", new ArrayList<Client>());
 	}
 
 	public Long getId() {
@@ -81,9 +87,16 @@ public class Admin implements Serializable {
 		this.password = password;
 	}
 
+	public List<Client> getClients() {
+		return clients;
+	}
+	public void setClients(List<Client> clients) {
+		this.clients = clients;
+	}
+
 	@Override
 	public String toString() {
-		return "Admin [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + "]";
+		return "Admin [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", clients=" + clients + "]";
 	}
 
 }
