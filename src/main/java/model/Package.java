@@ -1,17 +1,18 @@
 package model;
 
-public class Package<T> {
+import java.io.Serializable;
+
+public class Package<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	int option;
+	Integer option;
 	T object;
-	double balance;
+	Double balance;
 	Boolean result;
 
-	public int getOption() {
+	public Integer getOption() {
 		return option;
 	}
-
 	public void setOption(int option) {
 		this.option = option;
 	}
@@ -19,15 +20,13 @@ public class Package<T> {
 	public T getObject() {
 		return object;
 	}
-
 	public void setObject(T object) {
 		this.object = object;
 	}
 
-	public double getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
-
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
@@ -35,7 +34,6 @@ public class Package<T> {
 	public Boolean getResult() {
 		return result;
 	}
-
 	public void setResult(Boolean result) {
 		this.result = result;
 	}
