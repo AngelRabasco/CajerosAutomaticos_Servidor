@@ -1,5 +1,8 @@
 package model.interfaces;
 
+import java.util.List;
+
+import model.Admin;
 import model.Client;
 
 public interface IClientDAO extends IDAO<Client, Long> {
@@ -18,4 +21,11 @@ public interface IClientDAO extends IDAO<Client, Long> {
 	 * @return The client with matching values
 	 */
 	public Client getByUsernamePassword(String username, String password);
+
+	/**
+	 * Get all clients who's administrator matches the submitted one
+	 * @param admin The client's administrator
+	 * @return The client's with matching administrator
+	 */
+	public List<Client> getByAdmin(Admin admin);
 }
