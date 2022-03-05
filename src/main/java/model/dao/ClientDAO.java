@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import model.Admin;
 import model.Client;
 import model.interfaces.IClientDAO;
 import util.PersistenceUnit;
@@ -57,6 +58,16 @@ public class ClientDAO implements IClientDAO {
 		query.setParameter("username", username);
 		query.setParameter("password", password);
 		Client result = query.getSingleResult();
+		em.getTransaction().commit();
+		return result;
+	}
+
+	public List<Client> getByAdmin(Admin admin) {
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		TypedQuery<Client> query = em.createNamedQuery("findClientsByAdmin", Client.class);
+		query.setParameter("adminId", admin.getId());
+		List<Client> result = query.getResultList();
 		em.getTransaction().commit();
 		return result;
 	}

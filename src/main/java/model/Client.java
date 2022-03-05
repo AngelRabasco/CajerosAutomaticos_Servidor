@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "findClientByUsername", query = "SELECT c FROM Client c WHERE c.username=:username"),
 	@NamedQuery(name = "findClientByUsernamePassword", query = "SELECT c FROM Client c WHERE c.username=:username AND c.password=:password"),
+  @NamedQuery(name = "findClientsByAdmin", query = "SELECT c FROM Client c WHERE c.admin=:adminId"),
 	@NamedQuery(name = "findAllClient", query = "SELECT c FROM Client c")
 })
 public class Client implements Serializable {
@@ -38,18 +41,22 @@ public class Client implements Serializable {
 	private String password;
 	@OneToMany(mappedBy = "client")
 	private List<Account> accounts;
+	@ManyToOne()
+	@JoinColumn(name = "adminId")
+	private Admin admin;
 
-	public Client(String name, String surname, String username, String password, List<Account> accounts) {
+	public Client(String name, String surname, String username, String password, List<Account> accounts, Admin admin) {
 		this.id = -1L;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.password = password;
 		this.accounts = accounts;
+		this.admin = admin;
 	}
 
 	public Client() {
-		this("", "", "", "", new ArrayList<Account>());
+		this("", "", "", "", new ArrayList<Account>(), new Admin());
 	}
 
 	public Long getId() {
@@ -94,10 +101,16 @@ public class Client implements Serializable {
 		this.accounts = accounts;
 	}
 
+	public Admin getAdmin() {
+		return admin;
+	}
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", accounts=" + accounts + "]";
+		return "Client [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", accounts=" + accounts + ", admin=" + admin + "]";
 	}
 
 }
