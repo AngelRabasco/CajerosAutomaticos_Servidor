@@ -61,6 +61,25 @@ public class AccountDAO implements IAccountDAO {
 		return result;
 	}
 
+	public void addBalance(Account account, Double amount) {
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		account.setBalance(account.getBalance() + amount);
+		em.merge(account);
+		em.getTransaction().commit();
+	}
+
+	public void subtractBalance(Account account, Double amount) throws Exception {
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		if (account.getBalance() - amount < 0) {
+			throw new Exception("Cantidad a extraer incorrecta");
+		}
+		account.setBalance(account.getBalance() - amount);
+		em.merge(account);
+		em.getTransaction().commit();
+	}
+
 	public List<Account> getAll() {
 		EntityManager em = PersistenceUnit.getEM();
 		em.getTransaction().begin();
