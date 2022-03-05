@@ -29,17 +29,15 @@ public class AccountController {
 		
 	}
 
-	public void extraerDinero(Account account, double cantidad) {
-			new AccountDAO().extraerDinero(account, cantidad);
-	
-	}
-	
-	public void ingresarDinero(Account account, double cantidad) {
+	public void extraerDinero(Account account, Double cantidad) {
 		try {
-			new AccountDAO().ingresarDinero(account, cantidad);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			new AccountDAO().subtractBalance(account, cantidad);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void ingresarDinero(Account account, Double cantidad) {
+		new AccountDAO().addBalance(account, cantidad);
 	}
 }

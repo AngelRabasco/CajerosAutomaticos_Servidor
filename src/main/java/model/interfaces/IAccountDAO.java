@@ -20,4 +20,21 @@ public interface IAccountDAO extends IDAO<Account, Long> {
 	 * @return All the accounts of the given client
 	 */
 	public List<Account> getAccountsByClient(Client client);
+
+	/**
+	 * Adds to the balance of the account
+	 * @param account The account to be modified
+	 * @param amount The amount to be added
+	 * @throws Exception 
+	 */
+	public void addBalance(Account account, Double amount);
+
+	/**
+	 * Subtracts to the balance of the account
+	 * @param account The account to be modified
+	 * @param amount The amount to be subtracted
+	 * @throws Exception 
+	 */
+	public void subtractBalance(Account account, Double amount) throws Exception;
+
 }
