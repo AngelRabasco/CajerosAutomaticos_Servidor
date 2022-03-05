@@ -36,4 +36,9 @@ public class ClientController {
 		return new ClientDAO().getByAdmin(admin);
 
 	}
+	
+	public synchronized void editClient(Client c) {
+		new ClientDAO().edit(c);
+
+	}
 }
