@@ -8,37 +8,36 @@ public class Package<T> {
 	double balance;
 	Boolean result;
 
-
-	public Boolean getResultado() {
-		return result;
-	}
-
-	public void setResultado(Boolean resultado) {
-		this.result = resultado;
-	}
-
-	public double getCantidad() {
-		return balance;
-	}
-
-	public void setCantidad(double cantidad) {
-		this.balance = cantidad;
-	}
-
-	public int getOpcion() {
+	public int getOption() {
 		return option;
 	}
 
-	public void setOpcion(int opcion) {
-		this.option = opcion;
+	public void setOption(int option) {
+		this.option = option;
 	}
 
-	public T getObjeto() {
+	public T getObject() {
 		return object;
 	}
 
-	public void setObjeto(T objeto) {
-		this.object = objeto;
+	public void setObject(T object) {
+		this.object = object;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public Boolean getResult() {
+		return result;
+	}
+
+	public void setResult(Boolean result) {
+		this.result = result;
 	}
 
 	@Override
