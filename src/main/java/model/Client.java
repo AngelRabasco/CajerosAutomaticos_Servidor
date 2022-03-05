@@ -19,7 +19,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Client")
 @NamedQueries({
-	@NamedQuery(name = "findClientsByAdmin", query = "SELECT c FROM Client c WHERE c.admin=:adminId")
+	@NamedQuery(name = "findClientByUsername", query = "SELECT c FROM Client c WHERE c.username=:username"),
+	@NamedQuery(name = "findClientByUsernamePassword", query = "SELECT c FROM Client c WHERE c.username=:username AND c.password=:password"),
+  @NamedQuery(name = "findClientsByAdmin", query = "SELECT c FROM Client c WHERE c.admin=:adminId"),
+	@NamedQuery(name = "findAllClient", query = "SELECT c FROM Client c")
 })
 public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -13,33 +13,53 @@ import util.PersistenceUnit;
 public class ClientDAO implements IClientDAO {
 
 	public void save(Client val) {
-		// TODO Auto-generated method stub
-
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		em.persist(val);
+		em.getTransaction().commit();
 	}
 
 	public void edit(Client val) {
-		// TODO Auto-generated method stub
-
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		em.merge(val);
+		em.getTransaction().commit();
 	}
 
 	public void delete(Client val) {
-		// TODO Auto-generated method stub
-
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		em.remove(val);
+		em.getTransaction().commit();
 	}
 
 	public Client getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		Client result = em.find(Client.class, id);
+		em.getTransaction().commit();
+		return result;
 	}
 
 	public Client getByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		TypedQuery<Client> query = em.createNamedQuery("findClientByUsername", Client.class);
+		query.setParameter("username", username);
+		Client result = query.getSingleResult();
+		em.getTransaction().commit();
+		return result;
 	}
 
 	public Client getByUsernamePassword(String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		TypedQuery<Client> query = em.createNamedQuery("findClientByUsernamePassword", Client.class);
+		query.setParameter("username", username);
+		query.setParameter("password", password);
+		Client result = query.getSingleResult();
+		em.getTransaction().commit();
+		return result;
 	}
 
 	public List<Client> getByAdmin(Admin admin) {
@@ -53,8 +73,12 @@ public class ClientDAO implements IClientDAO {
 	}
 
 	public List<Client> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = PersistenceUnit.getEM();
+		em.getTransaction().begin();
+		TypedQuery<Client> query = em.createNamedQuery("findAllClient", Client.class);
+		List<Client> result = query.getResultList();
+		em.getTransaction().commit();
+		return result;
 	}
 
 }
