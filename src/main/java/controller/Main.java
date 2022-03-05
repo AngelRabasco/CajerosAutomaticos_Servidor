@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.iesfranciscodelosrios.CajerosAutomaticosServidor.ServidorMain;
 
 public class Main {
 
