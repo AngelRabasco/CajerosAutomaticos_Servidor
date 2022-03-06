@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.util.List;
 
@@ -9,63 +7,111 @@ import model.Account;
 import model.Admin;
 import model.Client;
 import model.GesConect;
-import model.dao.AdminDAO;
-import model.dao.ClientDAO;
 import model.Package;
 
-
 public class ServerController implements Runnable {
-	ServerSocket servidor;
+	ServerSocket server;
 	GesConect con = new GesConect(9999);
-	
-	public void serverController(Object action) {
 
+	public void serverController(Object action) {
 		Package<?> paquete = (Package<?>) action;
-		
+
 		switch (paquete.getOption()) {
-		//Opción1 1 Crea un nuevo cliente
-		case 1:
-			Package<Client> clientpackage1 = (Package<Client>) paquete;
-			new ClientController().createClient(clientpackage1.getObject());
+
+		case 1: // Creates a client
+			@SuppressWarnings("unchecked")
+			Package<Client> clientCreationPackage = (Package<Client>) paquete;
+			new ClientController().createClient(clientCreationPackage.getObject());
 			break;
-		//Opción 2 Edita un cliente
-		case 2:
-			Package<Client> clientpackage2 = (Package<Client>) paquete;
-			new ClientController().editClient(clientpackage2.getObject());
-			
+
+		case 2: // Modifies a client
+			@SuppressWarnings("unchecked")
+			Package<Client> clientEditionPackage = (Package<Client>) paquete;
+			new ClientController().editClient(clientEditionPackage.getObject());
 			break;
-		//Opción 3 Borra un cliente
-		case 3:
-			Package<Client> clientpackage3 = (Package<Client>) paquete;
-			new ClientController().deleteClient(clientpackage3.getObject());
+
+		case 3: // Removes a client
+			@SuppressWarnings("unchecked")
+			Package<Client> clienRemovalPackage = (Package<Client>) paquete;
+			new ClientController().deleteClient(clienRemovalPackage.getObject());
 			break;
-		//Opción 4 Traer un cliente por id
-		case 4:
-			Package<Client> clientpackage4 = (Package<Client>) paquete;
-			new ClientController().getClientById(clientpackage4.getObject().getId());
+
+		case 4: // Gets client by their id
+			@SuppressWarnings("unchecked")
+			Package<Client> clientGetByIdPackage = (Package<Client>) paquete;
+			try {
+				Client recievedClient = new ClientController().getClientById(clientGetByIdPackage.getObject().getId());
+				if (recievedClient != null) {
+					clientGetByIdPackage.setResult(true);
+					clientGetByIdPackage.setObject(recievedClient);
+				} else {
+					clientGetByIdPackage.setResult(false);
+				}
+				this.con.sendObjectToServer(clientGetByIdPackage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
-		//Opción 5 Inicia la sesión
+
+		// Opción 5 Inicia la sesión
 		case 5:
 			Package<Client> clientpackage5 = (Package<Client>) paquete;
 			new ClientController().logUser(clientpackage5.getObject());
 			break;
-		//Opción 6 Muestra los clientes de un administrador
-		case 6:
-			Package<Client> clientpackage6 = (Package<Client>) paquete;
-			new ClientController().ShowAccountByAdmin(clientpackage6.getObject().getAdmin());
+
+		case 6: // Gets clients of a given administrator
+			@SuppressWarnings("unchecked")
+			Package<Admin> clientAdminPackage = (Package<Admin>) paquete;
+			Package<List<Client>> clientGetByAdminPackage = new Package<List<Client>>();
+			try {
+				List<Client> recievedClients = new ClientController().ShowAccountByAdmin(clientAdminPackage.getObject());
+				if (!recievedClients.isEmpty()) {
+					clientGetByAdminPackage.setResult(true);
+					clientGetByAdminPackage.setObject(recievedClients);
+				} else {
+					clientGetByAdminPackage.setResult(false);
+				}
+				this.con.sendObjectToServer(clientGetByAdminPackage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
-		//Opción 7 Devuelve todos los clientes
-		case 7:
-			Package<Client> clientpackage7 = (Package<Client>) paquete;
-			new ClientController().getAllClients();
+
+		case 7: // Gets all clients
+			@SuppressWarnings("unchecked")
+			Package<List<Client>> clientGetAllPackage = (Package<List<Client>>) paquete;
+			try {
+				List<Client> recievedClients = new ClientController().getAllClients();
+				if (!recievedClients.isEmpty()) {
+					clientGetAllPackage.setResult(true);
+					clientGetAllPackage.setObject(recievedClients);
+				} else {
+					clientGetAllPackage.setResult(false);
+				}
+				this.con.sendObjectToServer(clientGetAllPackage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
-		//Opción 8 Devuelve un administrador por su id
-		case 8:
-			Package<Admin> adminpackage1 = (Package<Admin>) paquete;
-			new AdminController().getAdminById(adminpackage1.getObject().getId());
+
+		case 8: // Get administrator by id
+			@SuppressWarnings("unchecked")
+			Package<Admin> adminGetByIdPackage = (Package<Admin>) paquete;
+			try {
+				Admin recievedAdmin = new AdminController().getAdminById(adminGetByIdPackage.getObject().getId());
+				if (recievedAdmin != null) {
+					adminGetByIdPackage.setResult(true);
+					adminGetByIdPackage.setObject(recievedAdmin);
+				} else {
+					adminGetByIdPackage.setResult(false);
+				}
+				this.con.sendObjectToServer(adminGetByIdPackage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
-		// Opción 9 Inicia la sesión como administrador
-		case 9:
+
+		case 9: // Administrator login
 			@SuppressWarnings("unchecked")
 			Package<Admin> adminLogInPackage = (Package<Admin>) paquete;
 			try {
@@ -73,179 +119,65 @@ public class ServerController implements Runnable {
 				if (logedAdmin != null) {
 					adminLogInPackage.setResult(true);
 					adminLogInPackage.setObject(logedAdmin);
-					this.con.sendObjectToServer(adminLogInPackage);
+				} else {
+					adminLogInPackage.setResult(false);
 				}
+				this.con.sendObjectToServer(adminLogInPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-//			new AdminController().logAdministrador(adminLogInPackage.getObject());
 			break;
-		//Opción 10 crea una nueva cuenta
-		case 10:
-			Package<Account> accountpackage1 = (Package<Account>) paquete;
-			new AccountController().CreateAccount(accountpackage1.getObject());;
+
+		case 10: // Creates an account
+			@SuppressWarnings("unchecked")
+			Package<Account> accountCreationPackage = (Package<Account>) paquete;
+			new AccountController().CreateAccount(accountCreationPackage.getObject());
 			break;
-		//Opción 11 edita una cuenta 
-		case 11:
-			Package<Account> accountpackage2 = (Package<Account>) paquete;
-			new AccountController().DeleteAccount(accountpackage2.getObject());;
+
+		case 11: // Edits an account
+			@SuppressWarnings("unchecked")
+			Package<Account> accountEditionPackage = (Package<Account>) paquete;
+			new AccountController().EditAccount(accountEditionPackage.getObject());
 			break;
-		//Opción 12 Muestra una cuenta
-		case 12:
-			Package<Account> accountpackage3 = (Package<Account>) paquete;
-			new AccountController().ShowAccount(accountpackage3.getObject().getId());
+
+		case 12: // Removes an account
+			@SuppressWarnings("unchecked")
+			Package<Account> accountDeletionPackage = (Package<Account>) paquete;
+			new AccountController().DeleteAccount(accountDeletionPackage.getObject());
 			break;
-		//Opción 13 Muestra una cuenta
-		case 13:
-			Package<Account> accountpackage4 = (Package<Account>) paquete;
-			new AccountController().extraerDinero(accountpackage4.getObject(), accountpackage4.getBalance());
+
+		case 13: // Gets account by its id
+			@SuppressWarnings("unchecked")
+			Package<Account> accountGetByIdPackage = (Package<Account>) paquete;
+			try {
+				Account recievedAccount = new AccountController().ShowAccount(accountGetByIdPackage.getObject().getId());
+				if (recievedAccount != null) {
+					accountGetByIdPackage.setResult(true);
+					accountGetByIdPackage.setObject(recievedAccount);
+				} else {
+					accountGetByIdPackage.setResult(false);
+				}
+				this.con.sendObjectToServer(accountGetByIdPackage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
-		//Opción 14 Muestra una cuenta
-		case 14:
-			Package<Account> accountpackage5 = (Package<Account>) paquete;
-			new AccountController().ingresarDinero(accountpackage5.getObject(), accountpackage5.getBalance());
+
+		case 14: // Subtracts from an account
+			@SuppressWarnings("unchecked")
+			Package<Account> accountSubtractionPackage = (Package<Account>) paquete;
+			new AccountController().extraerDinero(accountSubtractionPackage.getObject(), accountSubtractionPackage.getBalance());
+			break;
+
+		case 15: // Adds to an account
+			@SuppressWarnings("unchecked")
+			Package<Account> accountAdditionPackage = (Package<Account>) paquete;
+			new AccountController().ingresarDinero(accountAdditionPackage.getObject(), accountAdditionPackage.getBalance());
 			break;
 		default:
 			break;
 		}
-		
-		/*switch (paquete.getOption()) {
 
-		case 1:
-			Package<Client> paqueteClient = (Package<Client>) paquete;
-			new ClientController().createClient(paqueteClient.getObject());
-			break;
-
-		case 2:
-			/*Package<Object> respuestPackageAccount5 = new Package<Object>();
-			ObjectOutputStream salidaObjetoAccount5;
-			try {
-				salidaObjetoAccount5 = new ObjectOutputStream(cliente.getOutputStream());
-				new AccountController().mostrarAccounts();
-				respuestPackageAccount5.setResultado(true);
-				salidaObjetoAccount5.writeObject(respuestPackageAccount5);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			break;
-
-		case 3: //UPDATEAR Client
-			Package<Client> paqueteAccount = (Package<Client>) paquete;
-			try {
-				paqueteAccount.setObject(new ClientDAO().edit(paqueteAccount.getObject()));
-				paqueteAccount.setResult(true);
-				this.sm.sendObjectToServer(paqueteAccount);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			break;
-
-		case 4:
-			Package<Account> paqueteAccount1 = (Package<Account>) paquete;
-			new AccountController().ingresarDinero(paqueteAccount1.getObject(), paqueteAccount1.getBalance());
-			break;
-
-		case 5:
-			Package<Client> paqueteClient2 = (Package<Client>) paquete;
-			System.out.println(paqueteClient2.getObject().toString());
-				try {
-					if(new ClientDAO().edit(paqueteClient2.getObject().getAdmin()!= null)){
-						paqueteClient2.setResult(true);
-						this.sm.sendObjectToServer(paqueteClient2);
-					}else{
-						paqueteClient2.setResult(false);
-						this.sm.sendObjectToServer(paqueteClient2);
-					}
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				};
-			break;
-
-		case 6:
-			Package<Account> paqueteAccount2 = (Package<Account>) paquete;
-			System.out.println("hola");
-			System.out.println(paqueteAccount2.getObject().getClient().toString());
-			if(new AccountController().CreateAccount(paqueteAccount2.getObject())){
-				paqueteAccount2.setResult(true);
-				this.sm.sendObjectToServer(paqueteAccount2);
-			}else{
-				paqueteAccount2.setResult(false);
-
-				this.sm.sendObjectToServer(paqueteAccount2);
-			}
-			break;
-
-		case 7: //Mostramos Clients del Admin
-		Package<Admin> paqueteAdmin = (Package<Admin>) paquete;
-		Package<List<Client>> paqueteClients = new Package<List<Client>>();
-			paqueteClients.setObjeto(new ClientController().ShowAccountByAdmin(paqueteAdmin.getObject().getId()));
-			this.sm.sendObjectToServer(paqueteClients);
-			break;
-
-		case 8:
-			Package<Account> paqueteAccount3 = (Package<Account>) paquete;
-			new AccountController().ShowAccount(paqueteAccount3.getObject().getId());
-			break;
-
-		case 9:
-			Package<Long> paqueteAccount4 = (Package<Long>) paquete;
-			System.out.println(paqueteAccount4.getObject());
-			if(new AccountController().DeleteAccount(paqueteAccount4.getObject())){
-				paqueteAccount4.setResult(true);
-				this.sm.sendObjectToServer(paqueteAccount4);
-			}else{
-				paqueteAccount4.setResult(false);
-				this.sm.sendObjectToServer(paqueteAccount4);
-			}
-			break;
-
-		case 10:
-			Package<List<Account>> paqueteAccount5L = new Package<List<Account>>();
-			paqueteAccount5L.setObject(new AccountController().mostrarAccounts());
-			this.sm.sendObjectToServer(paqueteAccount5L);
-
-			break;
-
-		case 11: // LOGIN Client, DEVUELVE TRUE SI ESTA EN LA BD Y FALSE SI NO.
-			Package<Client> paqueteClient11 = (Package<Client>) paquete;
-			try {
-				Boolean bool = new ClientController().logUser(paqueteClient11.getObject());
-				if (bool) {
-					paqueteClient11.setResult(true);
-
-					Client u=new ClientDAO().getClientByNamePassword(paqueteClient11.getObject());
-				
-					paqueteClient11.setObject(u);
-					this.sm.sendObjectToServer(paqueteClient11);
-				} else {
-					paqueteClient11.setResult(false);
-					this.sm.sendObjectToServer(paqueteClient11);
-				}
-			} catch (Exception e) {
-			}
-			break;
-
-		case 12:
-			Package<Admin> paqueteAdmin4 = (Package<Admin>) paquete;
-			try {
-				if (new AdminController().logAdministrador(paqueteAdmin4.getObject());
-					Admin a = new AdminDAO().getByUsernamePassword(paqueteAdmin4.getObject());
-					paqueteAdmin4.setResult(true);
-					paqueteAdmin4.setObject(a);
-					this.sm.sendObjectToServer(paqueteAdmin4);
-				} else {
-					paqueteAdmin4.setResult(false);
-					this.sm.sendObjectToServer(paqueteAdmin4);
-				}
-			} catch (Exception e) {
-			}
-			break;
-		default:
-			break; 
-		}*/
 	}
 
 	public void run() {
@@ -260,7 +192,7 @@ public class ServerController implements Runnable {
 			// TODO: handle exception
 		}
 	}
-	
+
 	public List<Account> removeUserFromAccounts(List<Account> Accounts) {
 		for (Account Account : Accounts) {
 			Account.setClient(null);

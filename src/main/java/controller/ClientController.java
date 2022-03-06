@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Admin;
@@ -9,9 +7,8 @@ import model.Client;
 import model.dao.ClientDAO;
 
 public class ClientController {
-	public synchronized boolean createClient(Client client) {
+	public synchronized void createClient(Client client) {
 		new ClientDAO().save(client);
-		return false;
 	}
 
 	public synchronized List<Client> getAllClients() {
@@ -20,7 +17,6 @@ public class ClientController {
 
 	public synchronized Client getClientById(Long id) {
 		return new ClientDAO().getById(id);
-
 	}
 
 	public synchronized void deleteClient(Client client) {
@@ -36,7 +32,7 @@ public class ClientController {
 		return new ClientDAO().getByAdmin(admin);
 
 	}
-	
+
 	public synchronized void editClient(Client c) {
 		new ClientDAO().edit(c);
 
