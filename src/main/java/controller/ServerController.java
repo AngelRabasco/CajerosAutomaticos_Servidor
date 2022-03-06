@@ -46,9 +46,18 @@ public class ServerController implements Runnable {
 			break;
 		//Opción 5 Inicia la sesión
 		case 5:
-			Package<Client> clientpackage5 = (Package<Client>) paquete;
-			new ClientController().logUser(clientpackage5.getObject());
-			break;
+			@SuppressWarnings("unchecked")
+			Package<Client> clientLogInPackage = (Package<Client>) paquete;
+			try {
+				Client logedClient = new ClientController().logUser(clientLogInPackage.getObject());
+				if (logedClient != null) {
+					clientLogInPackage.setResult(true);
+					clientLogInPackage.setObject(logedClient);
+					this.con.sendObjectToServer(clientLogInPackage);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		//Opción 6 Muestra los clientes de un administrador
 		case 6:
 			Package<Client> clientpackage6 = (Package<Client>) paquete;
