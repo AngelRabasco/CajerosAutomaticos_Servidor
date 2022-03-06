@@ -13,6 +13,11 @@ public class AccountController {
 		aDAO.save(account);
 	
 	}
+	
+	public void EditAccount(Account account) {
+		new AccountDAO().edit(account);
+	}
+	
 	public void DeleteAccount(Account account) {
 		AccountDAO aDAO= new AccountDAO();
 		aDAO.delete(account);
