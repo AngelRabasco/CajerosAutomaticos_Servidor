@@ -64,13 +64,16 @@ public class ServerController implements Runnable {
 			Package<Admin> adminpackage1 = (Package<Admin>) paquete;
 			new AdminController().getAdminById(adminpackage1.getObject().getId());
 			break;
-		//Opción 9 Inicia la sesión como administrador
+		// Opción 9 Inicia la sesión como administrador
 		case 9:
 			@SuppressWarnings("unchecked")
 			Package<Admin> adminLogInPackage = (Package<Admin>) paquete;
 			try {
-				if (new AdminController().logAdministrador(adminLogInPackage.getObject()) != null) {
-					System.out.println("aaaa");
+				Admin logedAdmin = new AdminController().logAdministrador(adminLogInPackage.getObject());
+				if (logedAdmin != null) {
+					adminLogInPackage.setResult(true);
+					adminLogInPackage.setObject(logedAdmin);
+					this.con.sendObjectToServer(adminLogInPackage);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

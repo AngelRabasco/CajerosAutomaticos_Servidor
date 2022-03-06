@@ -20,22 +20,16 @@ public class GesConect {
         this.port = port;
     }
 
-	public Object getObjectFromClient() {
-
-		try (ServerSocket serverSocket = new ServerSocket(port)) {
-			socket = serverSocket.accept();
-
-			inputStream = new ObjectInputStream(socket.getInputStream());
-			System.out.println(inputStream.readObject());
-
-			obj = inputStream.readObject();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		public Object getObjectFromClient() {
+			try (ServerSocket serverSocket = new ServerSocket(port)) {
+				socket = serverSocket.accept();
+				inputStream = new ObjectInputStream(socket.getInputStream());
+				obj = inputStream.readObject();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return obj;
 		}
-
-		return obj;
-	}
 
 
 	public void sendObjectToServer(Object obj) {
