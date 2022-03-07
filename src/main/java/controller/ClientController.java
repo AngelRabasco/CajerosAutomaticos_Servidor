@@ -11,30 +11,28 @@ public class ClientController {
 		new ClientDAO().save(client);
 	}
 
-	public synchronized List<Client> getAllClients() {
-		return new ClientDAO().getAll();
-	}
-
-	public synchronized Client getClientById(Long id) {
-		return new ClientDAO().getById(id);
+	public synchronized void editClient(Client c) {
+		new ClientDAO().edit(c);
 	}
 
 	public synchronized void deleteClient(Client client) {
 		new ClientDAO().delete(client);
 	}
 
-	public synchronized Client logUser(Client client) {
+	public synchronized Client getClientById(Long id) {
+		return new ClientDAO().getById(id);
+	}
+
+	public synchronized List<Client> getAccountsByAdmin(Admin admin) {
+		return new ClientDAO().getByAdmin(admin);
+	}
+
+	public synchronized List<Client> getAllClients() {
+		return new ClientDAO().getAll();
+	}
+
+	public synchronized Client logInUser(Client client) {
 		return new ClientDAO().getByUsernamePassword(client.getUsername(), client.getPassword());
 	}
 
-	public synchronized List<Client> ShowAccountByAdmin(Admin admin) {
-
-		return new ClientDAO().getByAdmin(admin);
-
-	}
-
-	public synchronized void editClient(Client c) {
-		new ClientDAO().edit(c);
-
-	}
 }
