@@ -20,7 +20,7 @@ public class GesConect {
         this.port = port;
     }
 
-		public Object getObjectFromClient() {
+		public Object getObject() {
 			try (ServerSocket serverSocket = new ServerSocket(port)) {
 				socket = serverSocket.accept();
 				inputStream = new ObjectInputStream(socket.getInputStream());
@@ -32,7 +32,7 @@ public class GesConect {
 		}
 
 
-	public void sendObjectToServer(Object obj) {
+	public void sendObject(Object obj) {
 		
 		try {
 			outputStream = new ObjectOutputStream(socket.getOutputStream());

@@ -47,7 +47,7 @@ public class ServerController implements Runnable {
 				} else {
 					clientGetByIdPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(clientGetByIdPackage);
+				this.con.sendObject(clientGetByIdPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -64,7 +64,7 @@ public class ServerController implements Runnable {
 				} else {
 					clientLogInPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(clientLogInPackage);
+				this.con.sendObject(clientLogInPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -81,7 +81,7 @@ public class ServerController implements Runnable {
 				} else {
 					clientGetByAdminPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(clientGetByAdminPackage);
+				this.con.sendObject(clientGetByAdminPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -98,7 +98,7 @@ public class ServerController implements Runnable {
 				} else {
 					clientGetAllPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(clientGetAllPackage);
+				this.con.sendObject(clientGetAllPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -115,7 +115,7 @@ public class ServerController implements Runnable {
 				} else {
 					adminGetByIdPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(adminGetByIdPackage);
+				this.con.sendObject(adminGetByIdPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -132,7 +132,7 @@ public class ServerController implements Runnable {
 				} else {
 					adminLogInPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(adminLogInPackage);
+				this.con.sendObject(adminLogInPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -167,7 +167,7 @@ public class ServerController implements Runnable {
 				} else {
 					accountGetByIdPackage.setResult(false);
 				}
-				this.con.sendObjectToServer(accountGetByIdPackage);
+				this.con.sendObject(accountGetByIdPackage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -194,7 +194,7 @@ public class ServerController implements Runnable {
 		try {
 			System.out.println("--SERVER START--");
 			while (true) {
-				Object action = con.getObjectFromClient();
+				Object action = con.getObject();
 				serverController(action);
 			}
 		} catch (Exception e) {
