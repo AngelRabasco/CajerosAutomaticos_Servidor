@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class Admin implements Serializable {
 	private String username;
 	@Column(name = "password")
 	private String password;
-	@OneToMany(mappedBy = "admin")
+	@OneToMany(mappedBy = "admin", fetch = FetchType.EAGER)
 	private List<Client> clients;
 
 	public Admin(String name, String surname, String username, String password, List<Client> clients) {
@@ -126,7 +127,7 @@ public class Admin implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Admin [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", clients=" + clients + "]";
+		return "Admin [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + "]";
 	}
 
 }
