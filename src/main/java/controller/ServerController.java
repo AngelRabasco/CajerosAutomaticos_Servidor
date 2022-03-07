@@ -57,7 +57,7 @@ public class ServerController implements Runnable {
 			@SuppressWarnings("unchecked")
 			Package<Client> clientLogInPackage = (Package<Client>) paquete;
 			try {
-				Client logedClient = new ClientController().logUser(clientLogInPackage.getObject());
+				Client logedClient = new ClientController().logInUser(clientLogInPackage.getObject());
 				if (logedClient != null) {
 					clientLogInPackage.setResult(true);
 					clientLogInPackage.setObject(logedClient);
@@ -74,7 +74,7 @@ public class ServerController implements Runnable {
 			Package<Admin> clientAdminPackage = (Package<Admin>) paquete;
 			Package<List<Client>> clientGetByAdminPackage = new Package<List<Client>>();
 			try {
-				List<Client> recievedClients = new ClientController().ShowAccountByAdmin(clientAdminPackage.getObject());
+				List<Client> recievedClients = new ClientController().getAccountsByAdmin(clientAdminPackage.getObject());
 				if (!recievedClients.isEmpty()) {
 					clientGetByAdminPackage.setResult(true);
 					clientGetByAdminPackage.setObject(recievedClients);
@@ -125,7 +125,7 @@ public class ServerController implements Runnable {
 			@SuppressWarnings("unchecked")
 			Package<Admin> adminLogInPackage = (Package<Admin>) paquete;
 			try {
-				Admin logedAdmin = new AdminController().logAdministrador(adminLogInPackage.getObject());
+				Admin logedAdmin = new AdminController().logInAdmin(adminLogInPackage.getObject());
 				if (logedAdmin != null) {
 					adminLogInPackage.setResult(true);
 					adminLogInPackage.setObject(logedAdmin);
@@ -141,26 +141,26 @@ public class ServerController implements Runnable {
 		case 10: // Creates an account
 			@SuppressWarnings("unchecked")
 			Package<Account> accountCreationPackage = (Package<Account>) paquete;
-			new AccountController().CreateAccount(accountCreationPackage.getObject());
+			new AccountController().createAccount(accountCreationPackage.getObject());
 			break;
 
 		case 11: // Edits an account
 			@SuppressWarnings("unchecked")
 			Package<Account> accountEditionPackage = (Package<Account>) paquete;
-			new AccountController().EditAccount(accountEditionPackage.getObject());
+			new AccountController().editAccount(accountEditionPackage.getObject());
 			break;
 
 		case 12: // Removes an account
 			@SuppressWarnings("unchecked")
 			Package<Account> accountDeletionPackage = (Package<Account>) paquete;
-			new AccountController().DeleteAccount(accountDeletionPackage.getObject());
+			new AccountController().deleteAccount(accountDeletionPackage.getObject());
 			break;
 
 		case 13: // Gets account by its id
 			@SuppressWarnings("unchecked")
 			Package<Account> accountGetByIdPackage = (Package<Account>) paquete;
 			try {
-				Account recievedAccount = new AccountController().ShowAccount(accountGetByIdPackage.getObject().getId());
+				Account recievedAccount = new AccountController().getAccountById(accountGetByIdPackage.getObject().getId());
 				if (recievedAccount != null) {
 					accountGetByIdPackage.setResult(true);
 					accountGetByIdPackage.setObject(recievedAccount);
@@ -176,13 +176,13 @@ public class ServerController implements Runnable {
 		case 14: // Subtracts from an account
 			@SuppressWarnings("unchecked")
 			Package<Account> accountSubtractionPackage = (Package<Account>) paquete;
-			new AccountController().extraerDinero(accountSubtractionPackage.getObject(), accountSubtractionPackage.getBalance());
+			new AccountController().subtractFromAccount(accountSubtractionPackage.getObject(), accountSubtractionPackage.getBalance());
 			break;
 
 		case 15: // Adds to an account
 			@SuppressWarnings("unchecked")
 			Package<Account> accountAdditionPackage = (Package<Account>) paquete;
-			new AccountController().ingresarDinero(accountAdditionPackage.getObject(), accountAdditionPackage.getBalance());
+			new AccountController().addToAccount(accountAdditionPackage.getObject(), accountAdditionPackage.getBalance());
 			break;
 		default:
 			break;
@@ -192,22 +192,14 @@ public class ServerController implements Runnable {
 
 	public void run() {
 		try {
-			System.out.println("INICIANDO SERVIDOR");
+			System.out.println("--SERVER START--");
 			while (true) {
-				System.out.println("Un nuevo cliente esta conectado al servidor, la informacion es: \n ");
 				Object action = con.getObjectFromClient();
 				serverController(action);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
-	}
-
-	public List<Account> removeUserFromAccounts(List<Account> Accounts) {
-		for (Account Account : Accounts) {
-			Account.setClient(null);
-		}
-		return Accounts;
 	}
 
 }
