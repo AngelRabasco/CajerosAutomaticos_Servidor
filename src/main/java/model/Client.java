@@ -142,7 +142,7 @@ public class Client implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username + ", password=" + password + ", admin=" + admin + "]";
+		return "Name=" + name + ", surname=" + surname + ", admin=" + admin;
 	}
 
 }
